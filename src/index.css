@@ -1,13 +1,17 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great');
+@import url('https://use.fontawesome.com/releases/v5.4.1/css/all.css');
 
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  width: 100%;
-  height: 100%;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -15,6 +19,27 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+input {
+  background: 'none';
+  border: 'none';
+  box-shadow: 'none';
+}
+
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: 'black';
 }
 
 @-webkit-keyframes rotate-forever {

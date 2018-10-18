@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from 'glamor';
+import './MovieCard.css';
 
 const fallbackImg =
   'http://nonton01.online/wp-content/uploads/2017/05/bbXyknvBVwbdjz4nWJXHfbptBgi-185x278.jpg';

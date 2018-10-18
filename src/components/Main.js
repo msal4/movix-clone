@@ -1,16 +1,19 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import MovieItem from './MovieItem';
+import MovieCard from './MovieCard';
 import Spinner from './Spinner';
 
 const fallbackImg =
   'http://nonton01.online/wp-content/uploads/2017/05/bbXyknvBVwbdjz4nWJXHfbptBgi-185x278.jpg';
 
 const listStyles = css({
+  position: 'relative',
   display: 'flex',
   flexWrap: 'wrap',
   padding: '15px 0 0 15px',
+  height: '100%',
+  // justifyContent: 'space-between',
 });
 
 const likesPanelStyles = css({
@@ -40,44 +43,8 @@ export default class Main extends React.Component {
 
     this.state = { data: {}, likes: [], dislikes: [] };
 
-    // Set the fetch data in the state
+    // Set the fetched data in the state
     this.getMovies([]);
-  }
-
-  render() {
-    let recommendations = this.renderMovies(this.state.data.items);
-    return (
-      <div>
-        <div className="likes-panel" {...likesPanelStyles}>
-          {[...this.state.likes, ...this.state.dislikes].map(item => (
-            <div
-              style={{
-                background: `url(${
-                  item.backdrop_path
-                    ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' +
-                      item.backdrop_path
-                    : fallbackImg
-                })`,
-                backgroundSize: 'contain',
-              }}
-              {...likedMovieStyles}
-              key={item.id}
-            >
-              <h2>{item.title}</h2>
-              <button
-                onClick={() => this.like(item, true)}
-                {...removeButtonStyles}
-              >
-                unlike
-              </button>
-            </div>
-          ))}
-        </div>
-        <div className="movies-list" {...listStyles}>
-          {recommendations || <Spinner />}
-        </div>
-      </div>
-    );
   }
 
   // Fetch movies from movix.ai API
@@ -99,59 +66,110 @@ export default class Main extends React.Component {
 
   // Fetch recommendations
   fetchRecommendations = liked => {
-    const movies = this.state.likes.map(movie => ({
-      type: 'movie',
-      liked,
-      id: movie.id,
-    }));
-    const payload = movies ? movies : [];
+    const movies = this.state.likes
+      ? this.state.likes.map(movie => ({
+          type: 'movie',
+          liked,
+          id: movie.id,
+        }))
+      : [];
+    const payload = movies;
     console.log(payload);
     this.getMovies(payload);
   };
 
   // Likes & Dislikes
-  like = (movie, liked) => {
+  like = movie => {
     // Removes the items to clear the page and start the spinner
     this.setState({ data: { items: null } });
 
-    const { likes } = this.state;
-    // Toggle
-    if (liked) {
-      this.setState({ likes: likes.filter(item => item.id !== movie.id) }, () =>
-        this.fetchRecommendations(),
-      );
-    } else {
-      this.setState({ likes: [...likes, movie] }, () =>
-        this.fetchRecommendations(true),
-      );
-    }
+    this.setState({ likes: [...this.state.likes, movie] }, () =>
+      this.fetchRecommendations(true),
+    );
   };
 
-  dislike = (movie, disliked) => {
-    let { dislikes } = this.state;
-    if (disliked)
-      this.setState(
-        {
-          dislikes: dislikes.filter(item => item.id !== movie.id),
-        },
-        () => this.fetchRecommendations(),
-      );
-    else
-      this.setState({ dislikes: [...dislikes, movie] }, () =>
-        this.fetchRecommendations(false),
-      );
+  dislike = movie => {
+    // this.setState({ data: { items: null } });
+    // this.setState(
+    //   { dislikes: [...this.state.dislikes, movie] }, () => this.fetchRecommendations(false),
+    // );
+
+    console.log('disliked:', movie.title);
   };
 
+  remove = item => {
+    this.setState({ data: { items: null } });
+    let { likes, dislikes } = this.state;
+    let favourite = false;
+
+    this.setState({
+      likes: likes.filter(movie => {
+        if (item.id === movie.id) {
+          favourite = true;
+          console.log('from likes, favourite: ' + favourite);
+          return false;
+        }
+        return true;
+      }),
+    });
+
+    // this.setState({
+    //   dislikes: dislikes.filter(movie => {
+    //     if (item.id === movie.id) {
+    //       favourite = false;
+    //       console.log('from dislikes, favourite: ' + favourite);
+    //       return false;
+    //     }
+    //     return true;
+    //   }),
+    // });
+
+    this.fetchRecommendations(favourite);
+  };
   // Convert the movies array into <MovieItem />'s
   renderMovies = items =>
     items
       ? items.map((item, i) => (
-          <MovieItem
-            movie={item}
+          <MovieCard
+            item={item}
             like={this.like}
             dislike={this.dislike}
             key={i}
           />
         ))
       : null;
+
+  render() {
+    let recommendations = this.renderMovies(this.state.data.items);
+    console.log(this.state);
+    return (
+      <React.Fragment>
+        <div className="likes-panel" {...likesPanelStyles}>
+          {[...this.state.likes, ...this.state.dislikes].map(item => (
+            <div
+              style={{
+                background: `url(${
+                  item.backdrop_path
+                    ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' +
+                      item.backdrop_path
+                    : fallbackImg
+                })`,
+                backgroundSize: 'contain',
+              }}
+              {...likedMovieStyles}
+              key={item.id}
+            >
+              <h2>{item.title}</h2>
+              <button onClick={() => this.remove(item)} {...removeButtonStyles}>
+                <i className="fas fa-trash-alt" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="movies-list" {...listStyles}>
+          {recommendations || <Spinner />}
+        </div>
+      </React.Fragment>
+    );
+  }
 }
