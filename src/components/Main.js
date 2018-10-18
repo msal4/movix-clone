@@ -13,14 +13,25 @@ const listStyles = css({
   padding: '15px 0 0 15px',
 });
 
-const containerStyles = css({
+const likesPanelStyles = css({
   display: 'flex',
+  width: '100%',
+  height: '200px',
+  backgroundColor: 'pink',
+  textAlign: 'center',
+  fontSize: '.5rem',
 });
 
-const likesPanelStyles = css({
-  width: '500px',
-  backgroundColor: 'pink',
-  flexBasis: '500px',
+const likedMovieStyles = css({
+  width: '80px',
+  height: '120px',
+  margin: 'auto 10px',
+  color: 'white',
+});
+
+const removeButtonStyles = css({
+  border: 'none',
+  backgorund: 'none',
 });
 
 export default class Main extends React.Component {
@@ -31,6 +42,42 @@ export default class Main extends React.Component {
 
     // Set the fetch data in the state
     this.getMovies([]);
+  }
+
+  render() {
+    let recommendations = this.renderMovies(this.state.data.items);
+    return (
+      <div>
+        <div className="likes-panel" {...likesPanelStyles}>
+          {[...this.state.likes, ...this.state.dislikes].map(item => (
+            <div
+              style={{
+                background: `url(${
+                  item.backdrop_path
+                    ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' +
+                      item.backdrop_path
+                    : fallbackImg
+                })`,
+                backgroundSize: 'contain',
+              }}
+              {...likedMovieStyles}
+              key={item.id}
+            >
+              <h2>{item.title}</h2>
+              <button
+                onClick={() => this.like(item, true)}
+                {...removeButtonStyles}
+              >
+                unlike
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="movies-list" {...listStyles}>
+          {recommendations || <Spinner />}
+        </div>
+      </div>
+    );
   }
 
   // Fetch movies from movix.ai API
@@ -91,7 +138,7 @@ export default class Main extends React.Component {
       );
     else
       this.setState({ dislikes: [...dislikes, movie] }, () =>
-        this.fetchRecommendations(),
+        this.fetchRecommendations(false),
       );
   };
 
@@ -107,32 +154,4 @@ export default class Main extends React.Component {
           />
         ))
       : null;
-
-  render() {
-    let recommendations = this.renderMovies(this.state.data.items);
-    return (
-      <div {...containerStyles}>
-        <div className="likes-panel" {...likesPanelStyles}>
-          {this.state.likes.map(item => (
-            <div key={item.id}>
-              <h2>{item.title}</h2>
-              <img
-                src={
-                  item.backdrop_path
-                    ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' +
-                      item.backdrop_path
-                    : fallbackImg
-                }
-                alt={item.title}
-              />
-              <button onClick={() => this.like(item, true)}>unlike</button>
-            </div>
-          ))}
-        </div>
-        <div className="movies-list" {...listStyles}>
-          {recommendations || <Spinner />}
-        </div>
-      </div>
-    );
-  }
 }
