@@ -86,6 +86,22 @@ const ratingsStyles = css({
   },
 });
 
+const ratingsMobileStyles = css({
+  display: 'none',
+  '@media screen and (max-width: 600px)': {
+    justifyContent: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '-80px',
+    backgroundColor: 'rgba(40, 40, 70, .8)',
+    borderRadius: '25px',
+    '& i': {
+      marginRight: '5px',
+      color: 'orange',
+    },
+  },
+});
+
 const descriptionStyles = css({
   color: '#fff',
   fontSize: '.9rem',
@@ -131,8 +147,8 @@ const actionsContainerStyles = css({
     },
   },
   '@media screen and (max-width: 600px)': {
-    backgroundColor: 'rgba(40, 40, 70, .9)',
-    borderRadius: '25px',
+    // backgroundColor: 'rgba(40, 40, 70, .9)',
+    // borderRadius: '25px',
   },
 });
 
@@ -200,6 +216,13 @@ export default class MovieCard extends React.Component {
                 {overview.length > OVERVIEW_LENGTH
                   ? overview.substring(0, OVERVIEW_LENGTH) + '...'
                   : overview}
+              </p>
+            </div>
+            <div className="movie-card-mobile-ratings" {...ratingsMobileStyles}>
+              <i className="far fa-star" />
+              <p>
+                {imdb_rating}
+                /10
               </p>
             </div>
             <div className="actions-container" {...actionsContainerStyles}>
