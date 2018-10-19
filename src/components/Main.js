@@ -12,14 +12,14 @@ const listStyles = css({
   display: 'flex',
   flexWrap: 'wrap',
   padding: '15px 0 0 15px',
-  height: '100%',
+  backgroundColor: '#f2f2f2',
   // justifyContent: 'space-between',
 });
 
 const likesPanelStyles = css({
   display: 'flex',
   width: '100%',
-  height: '200px',
+  height: '100px',
   backgroundColor: 'pink',
   textAlign: 'center',
   fontSize: '.5rem',

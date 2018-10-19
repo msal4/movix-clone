@@ -11,6 +11,7 @@ const containerStyles = css({
   borderRadius: '10px',
   overflow: 'hidden',
   boxShadow: '0 0 20px rgba(0, 0, 0, .3)',
+  background: 'rgba(40, 40, 70, .9);',
 });
 
 const cardStyles = css({
@@ -41,7 +42,7 @@ const cardBodyStyles = css({
 });
 
 const cardTitleStyles = css({
-  color: '#C36894',
+  color: '#fff',
   fontSize: '1rem',
   fontWeight: '600',
   margin: '5px',
@@ -120,7 +121,7 @@ const tagStyles = css({
 });
 
 const yearStyles = css({
-  color: 'gray',
+  color: '#f0f0f0',
   fontWeight: '500',
   marginLeft: '5px',
 });

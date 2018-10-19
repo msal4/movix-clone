@@ -22,18 +22,20 @@ const testData = {
 };
 
 class App extends Component {
-  testRender = (n, items) => {
-    if (n == 0) return items;
-    return this.testRender(n - 1, [...items, <MovieCard item={testData} />]);
-  };
+  // Recursive method
+  testRender = (n, items) =>
+    n === 0
+      ? items
+      : this.testRender(n - 1, [...items, <MovieCard item={testData} />]);
+
   render() {
     return (
       <React.Fragment>
         <Header />
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {/* <div style={{ display: 'flex', flexWrap: 'wrap', padding: '20px' }}>
           {this.testRender(100, [])}
-        </div>
-        {/* <Main /> */}
+        </div> */}
+        <Main />
       </React.Fragment>
     );
   }
