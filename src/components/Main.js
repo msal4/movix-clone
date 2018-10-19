@@ -13,28 +13,57 @@ const listStyles = css({
   flexWrap: 'wrap',
   padding: '15px 0 0 15px',
   backgroundColor: '#f2f2f2',
-  // justifyContent: 'space-between',
+  justifyContent: 'center',
 });
 
 const likesPanelStyles = css({
   display: 'flex',
   width: '100%',
-  height: '100px',
-  backgroundColor: 'pink',
+  height: '121px',
+  backgroundColor: '#2778AA',
   textAlign: 'center',
   fontSize: '.5rem',
+  padding: '10px',
+  boxSizing: 'border-box',
 });
 
 const likedMovieStyles = css({
-  width: '80px',
-  height: '120px',
+  width: '67',
+  height: '101px',
+  padding: '4px',
+  boxSizing: 'border-box',
   margin: 'auto 10px',
   color: 'white',
+  borderRadius: '5px',
+  boxShadow: '0 0 0 2px white',
+});
+
+const removeWrapperStyles = css({
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  opacity: 0,
+  transition: 'all .1s',
+  '&:hover': {
+    opacity: '1',
+  },
 });
 
 const removeButtonStyles = css({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  padding: '6px 14px',
   border: 'none',
   backgorund: 'none',
+  fontSize: '2rem',
+  // backgroundColor: '#fff',
+  // color: 'rgb(252, 25, 93)',
+  transition: 'all .2s',
+  borderRadius: '50%',
+  color: '#fff',
+  backgroundColor: 'rgb(252, 25, 93)',
 });
 
 export default class Main extends React.Component {
@@ -59,9 +88,8 @@ export default class Main extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ data });
-        console.log(this.state);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   };
 
   // Fetch recommendations
@@ -73,18 +101,16 @@ export default class Main extends React.Component {
           id: movie.id,
         }))
       : [];
-    const payload = movies;
-    console.log(payload);
-    this.getMovies(payload);
+    console.table(movies);
+    this.getMovies(movies);
   };
 
   // Likes & Dislikes
   like = movie => {
     // Removes the items to clear the page and start the spinner
-    this.setState({ data: { items: null } });
-
-    this.setState({ likes: [...this.state.likes, movie] }, () =>
-      this.fetchRecommendations(true),
+    this.setState(
+      { data: { items: null }, likes: [...this.state.likes, movie] },
+      () => this.fetchRecommendations(true),
     );
   };
 
@@ -93,25 +119,29 @@ export default class Main extends React.Component {
     // this.setState(
     //   { dislikes: [...this.state.dislikes, movie] }, () => this.fetchRecommendations(false),
     // );
-
-    console.log('disliked:', movie.title);
   };
 
-  remove = item => {
-    this.setState({ data: { items: null } });
-    let { likes, dislikes } = this.state;
-    let favourite = false;
+  remove = unlikedItem => {
+    this.setState(
+      {
+        data: { items: null },
+        likes: this.state.likes.filter(item => item.id !== unlikedItem.id),
+      },
+      () => this.fetchRecommendations(true),
+    );
+    // let { likes, dislikes } = this.state;
+    // let favourite = false;
 
-    this.setState({
-      likes: likes.filter(movie => {
-        if (item.id === movie.id) {
-          favourite = true;
-          console.log('from likes, favourite: ' + favourite);
-          return false;
-        }
-        return true;
-      }),
-    });
+    // this.setState({
+    //   likes: likes.filter(movie => {
+    //     if (item.id === movie.id) {
+    //       favourite = true;
+    //       console.log('from likes, favourite: ' + favourite);
+    //       return false;
+    //     }
+    //     return true;
+    //   }),
+    // });
 
     // this.setState({
     //   dislikes: dislikes.filter(movie => {
@@ -123,8 +153,6 @@ export default class Main extends React.Component {
     //     return true;
     //   }),
     // });
-
-    this.fetchRecommendations(favourite);
   };
   // Convert the movies array into <MovieItem />'s
   renderMovies = items =>
@@ -159,10 +187,14 @@ export default class Main extends React.Component {
               {...likedMovieStyles}
               key={item.id}
             >
-              <h2>{item.title}</h2>
-              <button onClick={() => this.remove(item)} {...removeButtonStyles}>
-                <i className="fas fa-trash-alt" />
-              </button>
+              <div {...removeWrapperStyles}>
+                <button
+                  onClick={() => this.remove(item)}
+                  {...removeButtonStyles}
+                >
+                  <i className="fas fa-trash-alt" />
+                </button>
+              </div>
             </div>
           ))}
         </div>

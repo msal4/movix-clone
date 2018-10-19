@@ -11,7 +11,7 @@ const containerStyles = css({
   borderRadius: '10px',
   overflow: 'hidden',
   boxShadow: '0 0 20px rgba(0, 0, 0, .3)',
-  background: 'rgba(40, 40, 70, .9);',
+  background: 'rgba(40, 40, 70, .9)',
 });
 
 const cardStyles = css({
@@ -127,19 +127,6 @@ const yearStyles = css({
 });
 
 export default class MovieCard extends React.Component {
-  state = {
-    liked: false,
-    disliked: false,
-  };
-  like = () => {
-    this.props.like(this.props.item, this.state.liked);
-    this.setState({ liked: !this.state.liked });
-  };
-  dislike = () => {
-    this.props.dislike(this.props.item, this.state.disliked);
-    this.setState({ disliked: !this.state.disliked });
-  };
-
   render = () => {
     let {
       overview,
@@ -183,10 +170,16 @@ export default class MovieCard extends React.Component {
               </p>
             </div>
             <div className="actions-container" {...actionsContainerStyles}>
-              <button className="like-btn" onClick={this.like}>
+              <button
+                className="like-btn"
+                onClick={() => this.props.like(this.props.item)}
+              >
                 <i className="fas fa-thumbs-up" />
               </button>
-              <button className="dislike-btn" onClick={this.dislike}>
+              <button
+                className="dislike-btn"
+                onClick={() => this.props.dislike(this.props.item)}
+              >
                 <i className="fas fa-thumbs-down" />
               </button>
               <div className="movie-card-ratings" {...ratingsStyles}>
