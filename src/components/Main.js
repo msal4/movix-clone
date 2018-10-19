@@ -3,50 +3,101 @@ import { css } from 'glamor';
 
 import MovieCard from './MovieCard';
 import Spinner from './Spinner';
+import Footer from './Footer';
 
 const fallbackImg =
-  'http://nonton01.online/wp-content/uploads/2017/05/bbXyknvBVwbdjz4nWJXHfbptBgi-185x278.jpg';
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBtTMWw84ZM3RzAg-uM8Fan6-Fo4nDJST12kirRcu62pfecC7U';
+
+const styles = css({
+  minHeight: '100%',
+  // boxSizing: 'border-box',
+  '& .hide': {
+    display: 'none',
+  },
+  '& .show': {
+    position: 'absolute',
+    zIndex: '2',
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: '#f0f0f0',
+    padding: '15px',
+    boxSizing: 'border-box',
+    width: '100%',
+    boxShadow: '7px 7px 10px rgba(100, 100, 100, .3)',
+    color: '#836890',
+    '& div': {
+      flex: '1',
+    },
+  },
+});
 
 const listStyles = css({
+  minHeight: '100%',
   position: 'relative',
   display: 'flex',
   flexWrap: 'wrap',
   padding: '15px 0 0 15px',
-  backgroundColor: '#f2f2f2',
+  // backgroundColor: '#f2f2f2',
   justifyContent: 'center',
+  zIndex: '1',
+  boxSizing: 'border-box',
 });
 
 const likesPanelStyles = css({
   display: 'flex',
   width: '100%',
   height: '121px',
-  backgroundColor: '#2778AA',
+  backgroundColor: 'gainsboro',
   textAlign: 'center',
   fontSize: '.5rem',
   padding: '10px',
   boxSizing: 'border-box',
 });
 
-const likedMovieStyles = css({
-  width: '67',
+const likedItemStyles = css({
+  position: 'relative',
+  width: '67px',
   height: '101px',
   padding: '4px',
   boxSizing: 'border-box',
   margin: 'auto 10px',
   color: 'white',
   borderRadius: '5px',
-  boxShadow: '0 0 0 2px white',
+  boxShadow: '1px 1px 10px rgba(100, 100, 180, .3)',
+  overflow: 'hidden',
+});
+
+const likedItemTitleStyles = css({
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  fontSize: '.7rem',
+  width: '100%',
+  height: '100%',
+  margin: '0',
+  padding: '3px',
+  textAlign: 'center',
+  lineBreak: 'normal',
+  boxSizing: 'border-box',
+  cursor: 'pointer',
+  transition: 'all .2s',
+  opacity: 1,
+  '&:hover': {
+    opacity: 0,
+  },
+  '& span': {
+    margin: 'auto',
+  },
+  '@media screen and (max-width: 600px)': {
+    opacity: 0,
+  },
 });
 
 const removeWrapperStyles = css({
   position: 'relative',
   width: '100%',
   height: '100%',
-  opacity: 0,
   transition: 'all .1s',
-  '&:hover': {
-    opacity: '1',
-  },
 });
 
 const removeButtonStyles = css({
@@ -54,16 +105,44 @@ const removeButtonStyles = css({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  padding: '6px 14px',
+  padding: '10px 12px',
   border: 'none',
-  backgorund: 'none',
-  fontSize: '2rem',
+  background: 'none',
+  fontSize: '1.3rem',
   // backgroundColor: '#fff',
   // color: 'rgb(252, 25, 93)',
-  transition: 'all .2s',
+  opacity: '.8',
   borderRadius: '50%',
   color: '#fff',
   backgroundColor: 'rgb(252, 25, 93)',
+});
+
+const suggestionCardStyles = css({
+  // opacity: '.8',
+  margin: 'auto',
+  opacity: '.6',
+  color: '#868484',
+  fontSize: '1.5rem',
+  fontWeight: '700',
+  padding: '5px 10px',
+  borderRadius: '40px',
+  boxSizing: 'border-box',
+  backgroundColor: 'white',
+  cursor: 'default',
+  // boxShadow: '1px 1px 10px rgba(100, 100, 180, .3)',
+});
+
+const tagStyles = css({
+  color: '#fff',
+  backgroundColor: '#836890',
+  margin: '5px',
+  padding: '2px 4px',
+  boxSizing: 'border-box',
+  borderRadius: '3px',
+  transition: 'all .2s',
+  '&:hover': {
+    boxShadow: '1px 1px 4px rgba(50, 50, 50, .5)',
+  },
 });
 
 export default class Main extends React.Component {
@@ -94,22 +173,25 @@ export default class Main extends React.Component {
 
   // Fetch recommendations
   fetchRecommendations = liked => {
-    const movies = this.state.likes
-      ? this.state.likes.map(movie => ({
-          type: 'movie',
+    const items = this.state.likes
+      ? this.state.likes.map(item => ({
+          type: item.type,
           liked,
-          id: movie.id,
+          id: item.id,
         }))
       : [];
-    console.table(movies);
-    this.getMovies(movies);
+    console.table(items);
+    this.getMovies(items);
   };
 
   // Likes & Dislikes
-  like = movie => {
+  like = item => {
     // Removes the items to clear the page and start the spinner
     this.setState(
-      { data: { items: null }, likes: [...this.state.likes, movie] },
+      {
+        data: { items: null },
+        likes: [...this.state.likes, item],
+      },
       () => this.fetchRecommendations(true),
     );
   };
@@ -127,8 +209,9 @@ export default class Main extends React.Component {
         data: { items: null },
         likes: this.state.likes.filter(item => item.id !== unlikedItem.id),
       },
-      () => this.fetchRecommendations(true),
+      () => this.fetchRecommendations(),
     );
+
     // let { likes, dislikes } = this.state;
     // let favourite = false;
 
@@ -154,6 +237,16 @@ export default class Main extends React.Component {
     //   }),
     // });
   };
+
+  filterTags = (tags, category) =>
+    !!tags
+      ? tags.filter(tag => tag.category === category).map(tag => (
+          <button {...tagStyles} key={tag.id} onClick={() => this.like(tag)}>
+            {tag.title}
+          </button>
+        ))
+      : '';
+
   // Convert the movies array into <MovieItem />'s
   renderMovies = items =>
     items
@@ -168,40 +261,68 @@ export default class Main extends React.Component {
       : null;
 
   render() {
-    let recommendations = this.renderMovies(this.state.data.items);
-    console.log(this.state);
+    let { data, likes } = this.state;
+    let recommendations = this.renderMovies(data.items);
+    console.log(data);
     return (
-      <React.Fragment>
+      <div {...styles}>
+        <div className="filter-panel hide">
+          <div className="genres">
+            <h3>Genres</h3>
+            <span>{this.filterTags(data.tags, 'genre')}</span>
+          </div>
+          <div className="keywords">
+            <h3>Keywords</h3>
+            <span>{this.filterTags(data.tags, 'keyword')}</span>
+          </div>
+        </div>
         <div className="likes-panel" {...likesPanelStyles}>
-          {[...this.state.likes, ...this.state.dislikes].map(item => (
-            <div
-              style={{
-                background: `url(${
-                  item.backdrop_path
-                    ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' +
-                      item.backdrop_path
-                    : fallbackImg
-                })`,
-                backgroundSize: 'contain',
-              }}
-              {...likedMovieStyles}
-              key={item.id}
-            >
-              <div {...removeWrapperStyles}>
-                <button
+          {!!likes.length ? (
+            likes.map(item => (
+              <div
+                style={{
+                  background: `url(${
+                    item.backdrop_path
+                      ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' +
+                        item.backdrop_path
+                      : fallbackImg
+                  })`,
+                  backgroundSize: 'contain',
+                }}
+                {...likedItemStyles}
+                key={item.id}
+              >
+                <div {...removeWrapperStyles}>
+                  <i className="fas fa-trash-alt" {...removeButtonStyles} />
+                </div>
+                <p
                   onClick={() => this.remove(item)}
-                  {...removeButtonStyles}
+                  style={{
+                    background: `url(${
+                      item.backdrop_path
+                        ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' +
+                          item.backdrop_path
+                        : fallbackImg
+                    })`,
+                    backgroundSize: 'contain',
+                  }}
+                  {...likedItemTitleStyles}
                 >
-                  <i className="fas fa-trash-alt" />
-                </button>
+                  <span>{item.title}</span>
+                </p>
               </div>
+            ))
+          ) : (
+            <div {...suggestionCardStyles}>
+              Like movies to improve recommendations
             </div>
-          ))}
+          )}
         </div>
         <div className="movies-list" {...listStyles}>
           {recommendations || <Spinner />}
         </div>
-      </React.Fragment>
+        {recommendations ? <Footer /> : ''}
+      </div>
     );
   }
 }

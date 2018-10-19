@@ -2,24 +2,41 @@ import React from 'react';
 import { css } from 'glamor';
 
 const headerStyles = css({
-  width: '100%',
-  height: '100px',
-  backgroundColor: 'rgba(40, 40, 70, .9)',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-around',
   boxSizing: 'border-box',
   padding: '0 20px',
+  width: '100%',
+  height: '100px',
+  backgroundColor: '#f0f0f0',
+  '& #filter-toggle': {
+    display: 'none',
+    '&:checked + .toggle-label': {
+      backgroundColor: '#836890',
+      color: '#fff',
+      boxShadow: '2px 2px 10px rgba(100, 100, 100, .5)',
+    },
+  },
+  '& .toggle-label': {
+    padding: '9.5px 11px',
+    borderRadius: '50%',
+    color: '#836890',
+    boxShadow: '2px 2px 8px rgba(100, 100, 100, .2)',
+    transition: 'all .2s',
+  },
 });
 
-const searchContainerStyles = css({
+const searchStyles = css({
   position: 'relative',
-  flex: '1',
   display: 'flex',
+  width: '600px',
   alignItems: 'center',
-  marginLeft: '20px',
+  margin: '20px',
   overflow: 'hidden',
   borderRadius: '52px',
   transition: 'all .5s',
+  boxShadow: '2px 2px 8px rgba(100, 100, 100, .2)',
   '& i': {
     position: 'absolute',
     right: '20px',
@@ -31,16 +48,16 @@ const searchContainerStyles = css({
   },
 });
 
-const inputStyles = css({
+const searchInputStyles = css({
   background: 'none',
   border: 'none',
   boxShadow: 'none',
-  backgroundColor: '#e0e0e0',
+  backgroundColor: '#f2f2f2',
   width: '100%',
   height: '100%',
-  fontSize: '1.4rem',
+  fontSize: '1rem',
   padding: '10px 20px',
-  transition: 'all .7s',
+  transition: 'all .5s',
   '&:focus': {
     outline: 'none',
     background: '#fff',
@@ -48,33 +65,42 @@ const inputStyles = css({
 });
 
 const logoStyles = css({
-  color: 'white',
+  color: '#f2f2f2',
   fontWeight: '600',
-  fontSize: '2rem',
+  fontSize: '1.65rem',
   backgroundColor: '#2778AA',
   padding: '5px',
-  // borderRadius: '7px',
+  boxShadow: '2px 2px 10px rgba(100, 100, 100, .5)',
+  // borderRadius: '50%',
 });
 
-const accountStyles = css({
-  width: '42px',
-  height: '42px',
-  background: '#f2f2f2',
-  marginLeft: '20px',
-  borderRadius: '50%',
-});
+class Header extends React.Component {
+  handleFilter = checkbox => {
+    let panel = document.querySelector('.filter-panel');
+    checkbox.target.checked
+      ? (panel.className = 'filter-panel show')
+      : (panel.className = 'filter-panel hide');
+  };
 
-const Header = () => (
-  <div id="header" {...headerStyles}>
-    <a href="/" {...logoStyles}>
-      Movix
-    </a>
-    <div {...searchContainerStyles}>
-      <input type="text" {...inputStyles} placeholder="Search Movix" />
-      <i className="fas fa-search" />
+  render = () => (
+    <div id="header" {...headerStyles} onClick={this.hideFilterPanel}>
+      <a href="/" {...logoStyles}>
+        Movix
+      </a>
+      <div {...searchStyles}>
+        <input type="text" {...searchInputStyles} placeholder="Search Movix" />
+        <i className="fas fa-search" />
+      </div>
+      <input
+        type="checkbox"
+        id="filter-toggle"
+        onChange={this.handleFilter}
+        // {...filterToggleStyles}
+      />
+      <label className="toggle-label" htmlFor="filter-toggle">
+        <i className="fas fa-filter" />
+      </label>
     </div>
-    <div {...accountStyles} />
-  </div>
-);
-
+  );
+}
 export default Header;

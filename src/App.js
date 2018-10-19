@@ -1,5 +1,6 @@
 // task02
 import React, { Component } from 'react';
+import { css } from 'glamor';
 
 import Header from './components/Header';
 import Main from './components/Main';
@@ -21,6 +22,10 @@ const testData = {
   ],
 };
 
+const styles = css({
+  minHeight: '100%',
+});
+
 class App extends Component {
   // Recursive method
   testRender = (n, items) =>
@@ -30,13 +35,13 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div {...styles}>
         <Header />
         {/* <div style={{ display: 'flex', flexWrap: 'wrap', padding: '20px' }}>
           {this.testRender(100, [])}
         </div> */}
         <Main />
-      </React.Fragment>
+      </div>
     );
   }
 }

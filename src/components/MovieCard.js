@@ -12,6 +12,9 @@ const containerStyles = css({
   overflow: 'hidden',
   boxShadow: '0 0 20px rgba(0, 0, 0, .3)',
   background: 'rgba(40, 40, 70, .9)',
+  '@media screen and (max-width: 600px)': {
+    width: '135px',
+  },
 });
 
 const cardStyles = css({
@@ -21,6 +24,10 @@ const cardStyles = css({
   width: '270px',
   height: '406px',
   color: '#fff',
+  '@media screen and (max-width: 600px)': {
+    width: '135px',
+    height: '203px',
+  },
 });
 
 const cardBodyStyles = css({
@@ -39,6 +46,10 @@ const cardBodyStyles = css({
   '&:hover': {
     opacity: '1',
   },
+  '@media screen and (max-width: 600px)': {
+    opacity: '1',
+    backgroundColor: 'unset',
+  },
 });
 
 const cardTitleStyles = css({
@@ -47,6 +58,7 @@ const cardTitleStyles = css({
   fontWeight: '600',
   margin: '5px',
   textAlign: 'center',
+  '@media screen and (max-width: 600px)': {},
 });
 
 const infoContainerStyles = css({
@@ -69,6 +81,9 @@ const ratingsStyles = css({
     marginRight: '5px',
     color: 'orange',
   },
+  '@media screen and (max-width: 600px)': {
+    display: 'none',
+  },
 });
 
 const descriptionStyles = css({
@@ -76,6 +91,9 @@ const descriptionStyles = css({
   fontSize: '.9rem',
   overflow: 'hidden',
   flex: 1,
+  '@media screen and (max-width: 600px)': {
+    display: 'none',
+  },
 });
 
 const actionsContainerStyles = css({
@@ -96,6 +114,10 @@ const actionsContainerStyles = css({
       backgroundColor: 'rgb(57, 146, 219)',
       color: '#fff',
     },
+    '@media screen and (max-width: 600px)': {
+      backgroundColor: 'rgb(57, 146, 219)',
+      color: '#fff',
+    },
   },
   '& .dislike-btn': {
     color: 'rgb(252, 25, 93)',
@@ -103,12 +125,23 @@ const actionsContainerStyles = css({
       backgroundColor: 'rgb(252, 25, 93)',
       color: '#fff',
     },
+    '@media screen and (max-width: 600px)': {
+      backgroundColor: 'rgb(252, 25, 93)',
+      color: '#fff',
+    },
+  },
+  '@media screen and (max-width: 600px)': {
+    backgroundColor: 'rgba(40, 40, 70, .9)',
+    borderRadius: '25px',
   },
 });
 
 const genresStyles = css({
   display: 'flex',
   flexWrap: 'wrap',
+  '@media screen and (max-width: 600px)': {
+    display: 'none',
+  },
 });
 
 const tagStyles = css({
@@ -192,9 +225,9 @@ export default class MovieCard extends React.Component {
             </div>
           </div>
         </div>
-        <div {...cardTitleStyles}>
+        <p {...cardTitleStyles}>
           {title} <span {...yearStyles}>{year}</span>
-        </div>
+        </p>
       </div>
     );
   };
