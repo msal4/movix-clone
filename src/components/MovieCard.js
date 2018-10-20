@@ -14,6 +14,7 @@ const containerStyles = css({
   background: 'rgba(40, 40, 70, .9)',
   '@media screen and (max-width: 600px)': {
     width: '135px',
+
   },
 });
 
@@ -58,7 +59,9 @@ const cardTitleStyles = css({
   fontWeight: '600',
   margin: '5px',
   textAlign: 'center',
-  '@media screen and (max-width: 600px)': {},
+  '@media screen and (max-width: 600px)': {
+    fontSize: '.8rem',
+  },
 });
 
 const infoContainerStyles = css({
@@ -176,6 +179,9 @@ const yearStyles = css({
   color: '#f0f0f0',
   fontWeight: '500',
   marginLeft: '5px',
+  '@media screen and (max-width: 600px)': {
+    fontSize: '.8rem',
+  },
 });
 
 export default class MovieCard extends React.Component {
