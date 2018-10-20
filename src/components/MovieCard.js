@@ -56,7 +56,7 @@ const cardTitleStyles = css({
   color: '#b1aeae',
   fontSize: '1rem',
   fontWeight: '600',
-  margin: '10px',
+  margin: '5px',
   // textAlign: 'center',
   '@media screen and (max-width: 600px)': {},
 });
