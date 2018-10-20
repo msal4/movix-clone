@@ -8,7 +8,7 @@ const OVERVIEW_LENGTH = 348;
 const containerStyles = css({
   width: '270px',
   margin: '0 20px 20px 0',
-  borderRadius: '10px',
+  borderRadius: '12px',
   overflow: 'hidden',
   boxShadow: '0 0 20px rgba(0, 0, 0, .3)',
   background: '#f2f2f2',
@@ -54,11 +54,13 @@ const cardBodyStyles = css({
 
 const cardTitleStyles = css({
   color: '#b1aeae',
-  fontSize: '1rem',
+  fontSize: '.8rem',
   fontWeight: '600',
-  margin: '5px',
-  // textAlign: 'center',
-  '@media screen and (max-width: 600px)': {},
+  margin: '10px',
+  textAlign: 'center',
+  '@media screen and (max-width: 600px)': {
+    margin: '5px 10px',
+  },
 });
 
 const infoContainerStyles = css({
@@ -86,18 +88,25 @@ const ratingsStyles = css({
   },
 });
 
-const ratingsMobileStyles = css({
+const mobileRatingsStyles = css({
   display: 'none',
   '@media screen and (max-width: 600px)': {
-    justifyContent: 'center',
+    position: 'absolute',
+    top: '4px',
+    left: '4px',
     display: 'flex',
-    alignItems: 'center',
-    marginTop: '-80px',
-    backgroundColor: 'rgba(40, 40, 70, .8)',
-    borderRadius: '25px',
-    '& i': {
-      marginRight: '5px',
-      color: 'orange',
+    // backgroundColor: 'rgba(255, 165, 0, .9)',
+    backgroundColor: '#f2f2f2',
+    color: 'orange',
+    width: '20px',
+    height: '20px',
+    textAlign: 'center',
+    fontSize: '.7rem',
+    borderRadius: '50%',
+    boxShadow: '0 0 0 2px orange',
+    fontWeight: '600',
+    '& span': {
+      margin: 'auto',
     },
   },
 });
@@ -173,6 +182,7 @@ const yearStyles = css({
   color: '#d0d0d0',
   fontWeight: '500',
   marginLeft: '5px',
+  // float: 'right',
 });
 
 export default class MovieCard extends React.Component {
@@ -201,6 +211,9 @@ export default class MovieCard extends React.Component {
           }}
           {...cardStyles}
         >
+          <span className="mobile-ratings" {...mobileRatingsStyles}>
+            <span>{imdb_rating}</span>
+          </span>
           <div className="movie-card-body" {...cardBodyStyles}>
             <div {...infoContainerStyles}>
               <div className="movie-card-info" {...infoStyles}>
@@ -218,13 +231,13 @@ export default class MovieCard extends React.Component {
                   : overview}
               </p>
             </div>
-            <div className="movie-card-mobile-ratings" {...ratingsMobileStyles}>
+            {/* <div className="movie-card-mobile-ratings" {...ratingsMobileStyles}>
               <i className="far fa-star" />
               <p>
                 {imdb_rating}
                 /10
               </p>
-            </div>
+            </div> */}
             <div className="actions-container" {...actionsContainerStyles}>
               <button
                 className="like-btn"
