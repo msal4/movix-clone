@@ -89,6 +89,7 @@ const ratingsStyles = css({
 const ratingsMobileStyles = css({
   display: 'none',
   '@media screen and (max-width: 600px)': {
+    fontSize:.8rem,
     justifyContent: 'center',
     display: 'flex',
     alignItems: 'center',
