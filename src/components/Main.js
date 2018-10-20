@@ -129,6 +129,9 @@ const suggestionCardStyles = css({
   boxSizing: 'border-box',
   backgroundColor: 'white',
   cursor: 'default',
+  '@media screen and (max-width: 600px)': {
+    fontSize: '1rem',
+  },
   // boxShadow: '1px 1px 10px rgba(100, 100, 180, .3)',
 });
 
@@ -314,7 +317,7 @@ export default class Main extends React.Component {
             ))
           ) : (
             <div {...suggestionCardStyles}>
-              Like movies to improve recommendations
+              Like movies to improve suggestions
             </div>
           )}
         </div>

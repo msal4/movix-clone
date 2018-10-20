@@ -11,7 +11,7 @@ const containerStyles = css({
   borderRadius: '10px',
   overflow: 'hidden',
   boxShadow: '0 0 20px rgba(0, 0, 0, .3)',
-  background: 'rgba(40, 40, 70, .9)',
+  background: '#f2f2f2',
   '@media screen and (max-width: 600px)': {
     width: '135px',
   },
@@ -53,11 +53,11 @@ const cardBodyStyles = css({
 });
 
 const cardTitleStyles = css({
-  color: '#fff',
+  color: '#b1aeae',
   fontSize: '1rem',
   fontWeight: '600',
-  margin: '5px',
-  textAlign: 'center',
+  margin: '10px',
+  // textAlign: 'center',
   '@media screen and (max-width: 600px)': {},
 });
 
@@ -170,7 +170,7 @@ const tagStyles = css({
 });
 
 const yearStyles = css({
-  color: '#f0f0f0',
+  color: '#d0d0d0',
   fontWeight: '500',
   marginLeft: '5px',
 });
