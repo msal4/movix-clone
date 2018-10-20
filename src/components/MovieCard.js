@@ -134,6 +134,7 @@ const actionsContainerStyles = css({
     '@media screen and (max-width: 600px)': {
       backgroundColor: 'rgb(57, 146, 219)',
       color: '#fff',
+      boxShadow: '1px 1px 3px rgba(100, 100, 100, .3)',
     },
   },
   '& .dislike-btn': {
@@ -145,6 +146,7 @@ const actionsContainerStyles = css({
     '@media screen and (max-width: 600px)': {
       backgroundColor: 'rgb(252, 25, 93)',
       color: '#fff',
+      boxShadow: '1px 1px 3px rgba(100, 100, 100, .3)',
     },
   },
   '@media screen and (max-width: 600px)': {
